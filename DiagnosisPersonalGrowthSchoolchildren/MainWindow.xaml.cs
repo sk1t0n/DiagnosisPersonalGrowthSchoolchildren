@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using DiagnosisPersonalGrowthSchoolchildren.Core;
+using System.Windows;
 
 namespace DiagnosisPersonalGrowthSchoolchildren
 {
@@ -15,6 +16,9 @@ namespace DiagnosisPersonalGrowthSchoolchildren
 
             var handler = new HandlerOfResults();
             var result = handler.CalculateResult(answers);
+
+            var chart = new ExcelChart(result);
+            chart.DrawChart("file.xlsx");
         }
     }
 }
