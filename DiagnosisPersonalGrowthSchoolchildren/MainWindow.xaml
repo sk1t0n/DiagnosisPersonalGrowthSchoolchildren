@@ -5,8 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:DiagnosisPersonalGrowthSchoolchildren"
         mc:Ignorable="d"
-        Title="Диагностика личностного роста школьников" Height="450" Width="800">
+        Title="Диагностика личностного роста школьников" Height="150" Width="450">
     <Grid>
-
+        <Button Width="100" Height="40" x:Name="BtnOpenDialog" Click="BtnOpenDialog_Click" Margin="0,-10,0,0">Open File</Button>
     </Grid>
 </Window>
