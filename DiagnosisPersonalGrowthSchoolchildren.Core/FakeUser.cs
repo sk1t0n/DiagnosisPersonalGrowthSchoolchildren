@@ -1,6 +1,6 @@
 ﻿namespace DiagnosisPersonalGrowthSchoolchildren
 {
-    internal class FakeUser
+    public class FakeUser
     {
         public static int[] GetAnswers()
         {

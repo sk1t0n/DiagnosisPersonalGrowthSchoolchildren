@@ -1,6 +1,6 @@
 ﻿namespace DiagnosisPersonalGrowthSchoolchildren
 {
-    internal class HandlerOfResults
+    public class HandlerOfResults
     {
         private const int NumberOfScales = 13;
 
