@@ -1,5 +1,6 @@
 ﻿using OfficeOpenXml;
 using OfficeOpenXml.Drawing.Chart;
+using System.Drawing;
 
 namespace DiagnosisPersonalGrowthSchoolchildren.Core
 {
@@ -42,10 +43,13 @@ namespace DiagnosisPersonalGrowthSchoolchildren.Core
                 FillCells(sheet, data);
 
                 var chart = sheet.Drawings.AddChart("Chart1", eChartType.ColumnClustered);
-                chart.SetSize(300, 300);
-                chart.SetPosition(50, 150);
+                chart.SetSize(800, 300);
+                chart.SetPosition(20, 200);
                 chart.Title.Text = "Диагностика личностного роста школьников";
-                chart.Series.Add($"A1:A{data.Length}");
+                chart.Title.Font.Size = 16;
+                chart.Title.Font.Bold = true;
+                chart.Title.Font.Fill.Color = Color.DarkGreen;
+                chart.Series.Add($"B1:B{data.Length}", $"A1:A{data.Length}");
 
                 package.Save();
             }
@@ -55,7 +59,8 @@ namespace DiagnosisPersonalGrowthSchoolchildren.Core
         {
             for (int i = 0; i < data.Length; i++)
             {
-                sheet.Cells[$"A{i + 1}"].Value = data[i];
+                sheet.Cells[$"A{i + 1}"].Value = $"Шкала {i + 1}";
+                sheet.Cells[$"B{i + 1}"].Value = data[i];
             }
         }
     }
