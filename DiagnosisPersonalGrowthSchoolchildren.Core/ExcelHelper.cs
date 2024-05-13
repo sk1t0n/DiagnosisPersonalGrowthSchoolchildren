@@ -44,7 +44,7 @@ namespace DiagnosisPersonalGrowthSchoolchildren.Core
 
                 var chart = sheet.Drawings.AddChart("Chart1", eChartType.ColumnClustered);
                 chart.SetSize(800, 300);
-                chart.SetPosition(20, 200);
+                chart.SetPosition(20, 400);
                 chart.Title.Text = "Диагностика личностного роста школьников";
                 chart.Title.Font.Size = 16;
                 chart.Title.Font.Bold = true;
@@ -61,7 +61,33 @@ namespace DiagnosisPersonalGrowthSchoolchildren.Core
             {
                 sheet.Cells[$"A{i + 1}"].Value = $"Шкала {i + 1}";
                 sheet.Cells[$"B{i + 1}"].Value = data[i];
+                sheet.Cells[$"C{i + 1}"].Value = GetResultTextByScale(data[i]);
             }
+        }
+
+        private string GetResultTextByScale(int result)
+        {
+            if (result >= 15 && result <= 28)
+            {
+                return "устойчиво-позитивное отношение";
+            }
+            
+            if (result >= 1 && result <= 14)
+            {
+                return "ситуативно-позитивное отношение";
+            }
+            
+            if (result >= -14 && result <= -1)
+            {
+                return "ситуативно-негативное отношение";
+            }
+            
+            if (result >= -28 && result <= -15)
+            {
+                return "устойчиво-негативное отношение";
+            }
+
+            return "результат неизвестен";
         }
     }
 }
