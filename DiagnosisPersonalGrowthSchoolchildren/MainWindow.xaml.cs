@@ -18,7 +18,7 @@ namespace DiagnosisPersonalGrowthSchoolchildren
 
         private void TextChangedEventHandler(object sender, TextChangedEventArgs e)
         {
-            ButtonOpenDialog.IsEnabled = TextSheetName.Text.Length > 0 ? true : false;
+            ButtonOpenDialog.IsEnabled = TextSheetName.Text.Length > 0;
         }
 
         private void ButtonOpenDialog_Click(object sender, RoutedEventArgs e)
@@ -37,7 +37,8 @@ namespace DiagnosisPersonalGrowthSchoolchildren
                     var handler = new HandlerOfResults();
                     var data = handler.CalculateResult(answers);
 
-                    var newExcelFileName = "DiagnosisResult.xlsx";
+                    var fileName = Path.GetFileName(dialog.FileName);
+                    var newExcelFileName = $"DiagnosisResult_{fileName}";
                     excelHelper.DrawChart(newExcelFileName, data);
 
                     string messageBoxText = $"Файл {newExcelFileName} успешно сохранён!";
