@@ -7,7 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DiagnosisPersonalGrowthScho
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DiagnosisPersonalGrowthSchoolchildrenTests", "DiagnosisPersonalGrowthSchoolchildrenTests\DiagnosisPersonalGrowthSchoolchildrenTests.csproj", "{49CFBBA1-9487-4E8A-93E8-667DAA485D31}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DiagnosisPersonalGrowthSchoolchildren.Core", "DiagnosisPersonalGrowthSchoolchildren.Core\DiagnosisPersonalGrowthSchoolchildren.Core.csproj", "{3681794D-9EC4-4F3D-A9A6-EE00B1F0EE5B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DiagnosisPersonalGrowthSchoolchildren.Core", "DiagnosisPersonalGrowthSchoolchildren.Core\DiagnosisPersonalGrowthSchoolchildren.Core.csproj", "{3681794D-9EC4-4F3D-A9A6-EE00B1F0EE5B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
