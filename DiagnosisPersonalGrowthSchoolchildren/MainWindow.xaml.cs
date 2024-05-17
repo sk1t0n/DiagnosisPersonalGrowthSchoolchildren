@@ -2,7 +2,6 @@
 using Microsoft.Win32;
 using System.IO;
 using System.Windows;
-using System.Windows.Controls;
 
 namespace DiagnosisPersonalGrowthSchoolchildren
 {
@@ -16,11 +15,6 @@ namespace DiagnosisPersonalGrowthSchoolchildren
             InitializeComponent();
         }
 
-        private void TextChangedEventHandler(object sender, TextChangedEventArgs e)
-        {
-            ButtonOpenDialog.IsEnabled = TextSheetName.Text.Length > 0;
-        }
-
         private void ButtonOpenDialog_Click(object sender, RoutedEventArgs e)
         {
             var dialog = new OpenFileDialog();
@@ -30,31 +24,38 @@ namespace DiagnosisPersonalGrowthSchoolchildren
 
             if (resultDialog == true)
             {
-                try
-                {
-                    var excelHelper = new ExcelHelper();
-                    var answers = excelHelper.GetDataFromExcel(dialog.FileName, TextSheetName.Text);
-                    var handler = new HandlerOfResults();
-                    var data = handler.CalculateResult(answers);
+                var excelHelper = new ExcelHelper();
+                var newExcelFileName = "DiagnosisResults.xlsx";
 
-                    var fileName = Path.GetFileName(dialog.FileName);
-                    var newExcelFileName = $"DiagnosisResult_{fileName}";
-                    excelHelper.DrawChart(newExcelFileName, data);
-
-                    string messageBoxText = $"Файл {newExcelFileName} успешно сохранён!";
-                    string caption = "Сохранение Excel файла";
-                    MessageBoxButton button = MessageBoxButton.OK;
-                    MessageBoxImage icon = MessageBoxImage.Information;
-                    MessageBox.Show(messageBoxText, caption, button, icon, MessageBoxResult.Yes);
-                }
-                catch (NullReferenceException)
+                if (File.Exists(newExcelFileName))
                 {
-                    string messageBoxText = $"Ошибка: неверное название листа в Excel файле!";
-                    string caption = "Произошла ошибка";
-                    MessageBoxButton button = MessageBoxButton.OK;
-                    MessageBoxImage icon = MessageBoxImage.Error;
-                    MessageBox.Show(messageBoxText, caption, button, icon, MessageBoxResult.Yes);
+                    File.Delete(newExcelFileName);
                 }
+
+                var sheetIndex = 1;
+                var handler = new HandlerOfResults();
+
+                while (true)
+                {
+                    try
+                    {
+                        var sheetName = $"Лист{sheetIndex}";
+                        sheetIndex++;
+                        var answers = excelHelper.GetDataFromExcel(dialog.FileName, sheetName);
+                        var data = handler.CalculateResult(answers);
+                        excelHelper.DrawChart(newExcelFileName, sheetName, data);
+                    }
+                    catch (NullReferenceException)
+                    {
+                        break;
+                    }
+                }
+
+                string messageBoxText = $"Файл {newExcelFileName} успешно сохранён!";
+                string caption = "Сохранение Excel файла";
+                MessageBoxButton button = MessageBoxButton.OK;
+                MessageBoxImage icon = MessageBoxImage.Information;
+                MessageBox.Show(messageBoxText, caption, button, icon, MessageBoxResult.Yes);
 
                 Application.Current.Shutdown();
             }

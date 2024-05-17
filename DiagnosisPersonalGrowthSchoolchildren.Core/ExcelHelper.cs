@@ -28,24 +28,20 @@ namespace DiagnosisPersonalGrowthSchoolchildren.Core
             return result;
         }
 
-        public void DrawChart(string fileName, int[] data)
+        public void DrawChart(string fileName, string sheetName, int[] data)
         {
             var file = new FileInfo(fileName);
 
-            if (file.Exists)
-            {
-                file.Delete();
-            }
-
             using (var package = new ExcelPackage(file))
             {
-                ExcelWorksheet sheet = package.Workbook.Worksheets.Add("Sheet1");
+                ExcelWorksheet sheet = package.Workbook.Worksheets.Add(sheetName);
+
                 FillCells(sheet, data);
 
-                var chart = sheet.Drawings.AddChart("Chart1", eChartType.ColumnClustered);
+                var chart = sheet.Drawings.AddChart($"Chart_{sheetName}", eChartType.ColumnClustered);
                 chart.SetSize(800, 300);
                 chart.SetPosition(20, 400);
-                chart.Title.Text = "Диагностика личностного роста школьников";
+                chart.Title.Text = $"Диагностика личностного роста школьника";
                 chart.Title.Font.Size = 16;
                 chart.Title.Font.Bold = true;
                 chart.Title.Font.Fill.Color = Color.DarkGreen;
