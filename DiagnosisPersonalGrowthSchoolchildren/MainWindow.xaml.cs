@@ -20,9 +20,9 @@ namespace DiagnosisPersonalGrowthSchoolchildren
             var dialog = new OpenFileDialog();
             dialog.DefaultExt = ".xlsx";
             dialog.Filter = "Excel (.xlsx)|*.xlsx";
-            bool? resultDialog = dialog.ShowDialog();
+            bool? dialogResult = dialog.ShowDialog();
 
-            if (resultDialog == true)
+            if (dialogResult == true)
             {
                 var excelHelper = new ExcelHelper();
                 var newExcelFileName = "DiagnosisResults.xlsx";
@@ -32,24 +32,8 @@ namespace DiagnosisPersonalGrowthSchoolchildren
                     File.Delete(newExcelFileName);
                 }
 
-                var sheetIndex = 1;
-                var handler = new HandlerOfResults();
-
-                while (true)
-                {
-                    try
-                    {
-                        var sheetName = $"Лист{sheetIndex}";
-                        sheetIndex++;
-                        var answers = excelHelper.GetDataFromExcel(dialog.FileName, sheetName);
-                        var data = handler.CalculateResult(answers);
-                        excelHelper.DrawChart(newExcelFileName, sheetName, data);
-                    }
-                    catch (NullReferenceException)
-                    {
-                        break;
-                    }
-                }
+                var data = excelHelper.CalculateResult(dialog.FileName);
+                excelHelper.DrawCharts(newExcelFileName, data);
 
                 string messageBoxText = $"Файл {newExcelFileName} успешно сохранён!";
                 string caption = "Сохранение Excel файла";

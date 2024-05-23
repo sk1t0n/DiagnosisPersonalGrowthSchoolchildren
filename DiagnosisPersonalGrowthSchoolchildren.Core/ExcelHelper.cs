@@ -11,24 +11,51 @@ namespace DiagnosisPersonalGrowthSchoolchildren.Core
             ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
         }
 
-        public int[] GetDataFromExcel(string fileName, string sheetName) 
+        public Dictionary<string, Dictionary<char, int[]>> CalculateResult(string fileName)
         {
             var file = new FileInfo(fileName);
-            var result = new int[Scales.GetValues().Length];
+            var result = new Dictionary<string, Dictionary<char, int[]>>();
 
             using (var package = new ExcelPackage(file))
             {
-                var sheet = package.Workbook.Worksheets[sheetName];
-                for (int i = 0; i < result.Length; i++)
+                foreach (var sheet in package.Workbook.Worksheets)
                 {
-                    result[i] = Convert.ToInt32(sheet.Cells[$"A{i + 1}"].Value);
+                    var column = 'A';
+                    var numberOfAnswers = Scales.GetValues().Length;
+                    var resultsByColumns = new Dictionary<char, int[]>();
+                    while (sheet.Cells[$"{column}1"].Value is not null)
+                    {
+                        var isNumeric = int.TryParse(sheet.Cells[$"{column}1"].Value.ToString(), out _);
+                        var startCell = isNumeric ? 1 : 2;
+                        var range = $"{column}{startCell}:{column}{numberOfAnswers + startCell - 1}";
+                        var cells = (object[,])sheet.Cells[range].Value;
+                        var data = new int[numberOfAnswers];
+                        for (int i = 0; i < numberOfAnswers; i++) data[i] = Convert.ToInt32(cells[i, 0]);
+                        var sums = new HandlerOfResults().CalculateResult(data);
+                        resultsByColumns.Add(column, sums);
+                        column++;
+                    }
+                    result.Add(sheet.Name, resultsByColumns);
+
                 }
             }
 
             return result;
         }
 
-        public void DrawChart(string fileName, string sheetName, int[] data)
+        public void DrawCharts(string fileName, Dictionary<string, Dictionary<char, int[]>> data)
+        {
+            foreach(var sheet in data)
+            {
+                foreach (var column in sheet.Value)
+                {
+                    var sheetName = $"{sheet.Key}_{column.Key}";
+                    DrawChart(fileName, sheetName, column.Value);
+                }
+            }
+        }
+
+        private void DrawChart(string fileName, string sheetName, int[] data)
         {
             var file = new FileInfo(fileName);
 
@@ -67,17 +94,17 @@ namespace DiagnosisPersonalGrowthSchoolchildren.Core
             {
                 return "устойчиво-позитивное отношение";
             }
-            
+
             if (result >= 1 && result <= 14)
             {
                 return "ситуативно-позитивное отношение";
             }
-            
+
             if (result >= -14 && result <= -1)
             {
                 return "ситуативно-негативное отношение";
             }
-            
+
             if (result >= -28 && result <= -15)
             {
                 return "устойчиво-негативное отношение";

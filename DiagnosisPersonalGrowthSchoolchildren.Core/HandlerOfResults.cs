@@ -2,7 +2,7 @@
 {
     public class HandlerOfResults
     {
-        private const int NumberOfScales = 13;
+        public const int NumberOfScales = 13;
 
         public int[] CalculateResult(int[] data)
         {
