@@ -15,7 +15,7 @@ namespace DiagnosisPersonalGrowthSchoolchildrenTests
         ];
 
         [Fact]
-        public void HandlerOfResultsTests_CalculateResult_ReturnsCorrectResult()
+        public void GivenAnswers_WhenCallCalculateResult_ThenReturnsCorrectResult()
         {
             // Arrange
             var handler = new HandlerOfResults();
